@@ -252,6 +252,20 @@ function initDosSetup() {
       ]);
     }
   });
+
+  // Mobile/touch: tap anywhere on the DOS screen to continue (Enter)
+  const onDosTap = (e) => {
+    if (AppState.currentScreen !== "dosSetup") return;
+    if (!dosReady) return;
+    if (e && e.type !== "click") e.preventDefault();
+    startSetupWizard();
+  };
+  if (window.PointerEvent) {
+    Dom.screens.dosSetup.addEventListener("pointerdown", onDosTap);
+  } else {
+    Dom.screens.dosSetup.addEventListener("touchstart", onDosTap, { passive: false });
+    Dom.screens.dosSetup.addEventListener("click", onDosTap);
+  }
 }
 
 function startDosSetup() {
@@ -562,15 +576,29 @@ function initDesktop() {
     });
   }
 
-  // Taskbar clock Easter egg (BSOD via multiple clicks)
-  let clockClickCount = 0;
-  Dom.clock.addEventListener("click", () => {
-    clockClickCount++;
-    if (clockClickCount >= 5) {
-      clockClickCount = 0;
+  // Taskbar clock Easter egg (BSOD via 5 taps/clicks)
+  let clockTapCount = 0;
+  let clockTapResetTimer = null;
+  const onClockTap = (e) => {
+    // Prevent generating an extra click after touch on some browsers
+    if (e.type !== "click") e.preventDefault();
+    clockTapCount++;
+    if (clockTapResetTimer) clearTimeout(clockTapResetTimer);
+    clockTapResetTimer = setTimeout(() => { clockTapCount = 0; }, 3000);
+    if (clockTapCount >= 5) {
+      clockTapCount = 0;
+      clearTimeout(clockTapResetTimer);
+      clockTapResetTimer = null;
       triggerBSOD();
     }
-  });
+  };
+  // Use pointer events for touch + mouse; fall back to click
+  if (window.PointerEvent) {
+    Dom.clock.addEventListener("pointerdown", onClockTap);
+  } else {
+    Dom.clock.addEventListener("touchstart", onClockTap, { passive: false });
+    Dom.clock.addEventListener("click", onClockTap);
+  }
 
   // Taskbar context menu
   Dom.taskbar.addEventListener("contextmenu", (e) => {
@@ -960,7 +988,7 @@ function initPartyWizardButtons() {
   // called from initDesktop if needed
 }
 
-if (document.getElementById("party-next")) {
+if (Dom.partyWizardWindow && Dom.partyNext && Dom.partyBack && Dom.partyFinish) {
   Dom.partyNext.addEventListener("click", () => {
     const steps = Dom.partyWizardWindow.querySelectorAll(".party-step");
     let currentStep = 1;
@@ -1283,10 +1311,7 @@ function initBSOD() {
 function triggerBSOD() {
   AppState.currentScreen = "bsod";
   Dom.bsodOverlay.classList.remove("hidden");
-  // hide all normal screens
-  for (const key in Dom.screens) {
-    Dom.screens[key].classList.add("hidden");
-  }
+  // Do not hide screens; overlay covers everything
 }
 
 function hideBSODToBoot() {

@@ -1022,7 +1022,11 @@ body {
 #bsod-overlay {
   position: absolute;
   inset: 0;
-  background: #0000aa;
+  background: #000;
+  background-image: url("../assets/Windows_95_OSR2.5_BSOD_ita.png");
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
   color: #ffffff;
   font-family: "Courier New", monospace;
   display: flex;
@@ -1032,8 +1036,7 @@ body {
 }
 
 #bsod-overlay pre {
-  white-space: pre;
-  font-size: 12px;
+  display: none;
 }
 
 /* Responsive adjustments */
