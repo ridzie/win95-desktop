@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Windows 95 Costume Edition</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" />
+  <link rel="stylesheet" href="css/win95.css" />
+</head>
+<body>
+  <!-- Outer shell for centering / scaling the virtual screen -->
+  <div id="viewport">
+    <div id="app">
+      <!-- BOOT MENU SCREEN -->
+      <div id="boot-menu-screen" class="screen">
+        <div class="boot-menu">
+          <div class="boot-text">
+            <pre>
+Windows 95 Boot Menu
+
+  1. Boot from disk
+  2. Reinstall Windows 95
+
+Use ↑ and ↓ to move the highlight to your choice.
+Press ENTER to select.
+            </pre>
+          </div>
+          <div class="boot-options">
+            <div class="boot-option boot-option-selected" data-option="boot">
+              Boot from disk
+            </div>
+            <div class="boot-option" data-option="reinstall">
+              Reinstall Windows 95
+            </div>
+          </div>
+          <div class="boot-buttons-mobile">
+            <button class="btn boot-btn" data-option="boot">Boot from disk</button>
+            <button class="btn boot-btn" data-option="reinstall">Reinstall Windows 95</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOS SETUP SCREEN -->
+      <div id="dos-setup-screen" class="screen hidden">
+        <div class="dos-screen">
+          <pre id="dos-output"></pre>
+          <div class="dos-hint">
+            Press ENTER to continue, ESC to try and escape.
+          </div>
+        </div>
+      </div>
+
+      <!-- SETUP WIZARD SCREEN -->
+      <div id="setup-wizard-screen" class="screen hidden">
+        <div class="wizard-container">
+          <div class="win95-window wizard-window">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-logo"></div>
+              <div class="title-bar-text">Windows 95 Setup</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close-setup aria-label="Close setup window">✕</button>
+              </div>
+            </div>
+            <div class="window-body wizard-body">
+              <div class="wizard-left">
+                <div class="wizard-illustration">
+                  <div class="wiz-monitor"></div>
+                  <div class="wiz-tower"></div>
+                  <div class="wiz-floppy"></div>
+                </div>
+              </div>
+              <div class="wizard-right">
+                <!-- Step containers -->
+                <div class="wizard-step" data-step="welcome">
+                  <h1>Welcome to Windows 95 Setup!</h1>
+                  <p>
+                    Congratulations on your choice of Windows 95, the newest and easiest way
+                    to pretend to use your computer.
+                  </p>
+                  <p>
+                    Setup will take from 30 to 60 minutes, depending on the speed of your dancing.
+                  </p>
+                </div>
+
+                <div class="wizard-step hidden" data-step="options">
+                  <h1>Setup Options</h1>
+                  <p>Select the type of setup you prefer:</p>
+                  <label class="radio">
+                    <input type="radio" name="setup-option" value="typical" checked />
+                    Typical – Recommended for most humans.
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="setup-option" value="portable" />
+                    Portable – For laptop users and social butterflies.
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="setup-option" value="compact" />
+                    Compact – Saves disk space by uninstalling your procrastination.
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="setup-option" value="custom" />
+                    Custom – For advanced users and costume overthinkers.
+                  </label>
+                </div>
+
+                <div class="wizard-step hidden" data-step="directory">
+                  <h1>Choose Directory</h1>
+                  <p>
+                    Select the directory where you want to install Windows 95.
+                    We recommend using the default unless you enjoy editing AUTOEXEC.BAT at parties.
+                  </p>
+                  <label class="radio">
+                    <input type="radio" name="dir-option" value="default" checked />
+                    C:\WINDOWS95
+                  </label>
+                  <label class="radio">
+                    <input type="radio" name="dir-option" value="other" />
+                    Other directory:
+                  </label>
+                  <input type="text" id="dir-input" class="text-input" placeholder="C:\PARTY95" disabled />
+                </div>
+
+                <div class="wizard-step hidden" data-step="overview">
+                  <h1>Windows 95 Setup Wizard</h1>
+                  <p>Setup will perform the following steps:</p>
+                  <ul class="bullet-list">
+                    <li>Collecting information about your computer.</li>
+                    <li>Copying Windows 95 files to your computer.</li>
+                    <li>Restarting your computer and finishing Setup.</li>
+                  </ul>
+                  <p class="note">
+                    Note: Windows 95 replaces any lingering sense of 21st-century UI design.
+                  </p>
+                </div>
+
+                <div class="wizard-step hidden" data-step="license">
+                  <h1>Software License Agreement</h1>
+                  <div class="license-box">
+                    By dancing through this installation, you agree to:
+                    <ul>
+                      <li>Not blame Windows for dance-related injuries.</li>
+                      <li>Allow the startup sound to play directly into your soul.</li>
+                      <li>Accept that floppies may appear without explanation.</li>
+                      <li>Forgive any General Protection Faults of character.</li>
+                    </ul>
+                    Scroll bar not included in demo.
+                  </div>
+                  <p>Do you accept the terms of this agreement?</p>
+                </div>
+
+                <div class="wizard-step hidden" data-step="copying">
+                  <h1>Copying Files...</h1>
+                  <p id="copying-status">Preparing to copy files...</p>
+                  <div class="progress-bar">
+                    <div class="progress-inner" id="copying-progress"></div>
+                  </div>
+                  <p class="note">This may take a few imaginary minutes.</p>
+                </div>
+
+                <div class="wizard-step hidden" data-step="finishing">
+                  <h1>Finishing Setup</h1>
+                  <ul class="bullet-list">
+                    <li>Collecting information about your computer – <strong>Done</strong></li>
+                    <li>Copying Windows 95 files – <strong>Done</strong></li>
+                    <li>Restarting your computer and finishing Setup – <strong>Pending</strong></li>
+                  </ul>
+                  <p>Setup is now ready to restart your computer and finish setting up Windows 95.</p>
+                </div>
+
+                <!-- Wizard buttons -->
+                <div class="wizard-buttons">
+                  <button class="btn" id="wizard-back">Back</button>
+                  <button class="btn" id="wizard-next">Next</button>
+                  <button class="btn" id="wizard-cancel">Cancel</button>
+                  <button class="btn hidden" id="wizard-continue">Continue</button>
+                  <button class="btn hidden" id="wizard-yes">Yes</button>
+                  <button class="btn hidden" id="wizard-no">No</button>
+                  <button class="btn hidden" id="wizard-finish">Finish</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DESKTOP SCREEN -->
+      <div id="desktop-screen" class="screen hidden">
+        <!-- Desktop background -->
+        <div id="desktop">
+          <!-- Desktop icons -->
+          <div class="desktop-icon" data-window-target="my-computer">
+            <div class="icon icon-computer"></div>
+            <div class="icon-label">My Computer</div>
+          </div>
+          <div class="desktop-icon" data-window-target="interweb">
+            <div class="icon icon-interweb"></div>
+            <div class="icon-label">Interweb Explorer</div>
+          </div>
+          <div class="desktop-icon" data-window-target="network">
+            <div class="icon icon-network"></div>
+            <div class="icon-label">Network Neighborhood</div>
+          </div>
+          <div class="desktop-icon" data-window-target="recycle-bin">
+            <div class="icon icon-bin"></div>
+            <div class="icon-label">Recycle Bin</div>
+          </div>
+          <div class="desktop-icon" data-window-target="party-drivers">
+            <div class="icon icon-floppy"></div>
+            <div class="icon-label">Install Party Drivers</div>
+          </div>
+
+          <!-- Windows (predefined, toggled via JS) -->
+
+          <!-- My Computer window -->
+          <div class="win95-window app-window hidden" data-window-id="my-computer">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-computer"></div>
+              <div class="title-bar-text">My Computer</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="icon-grid">
+                <div class="big-icon" data-action="open-drive-c">
+                  <div class="icon icon-drive"></div>
+                  <span>C:\ (Costume Drive)</span>
+                </div>
+                <div class="big-icon" data-action="open-drive-a">
+                  <div class="icon icon-floppy"></div>
+                  <span>A:\ (Floppy)</span>
+                </div>
+                <div class="big-icon" data-action="open-party-files">
+                  <div class="icon icon-folder"></div>
+                  <span>Party Files (P:)</span>
+                </div>
+                <div class="big-icon" data-action="open-anxiety">
+                  <div class="icon icon-x"></div>
+                  <span>System Anxiety (X:)</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Interweb Explorer window -->
+          <div class="win95-window app-window hidden" data-window-id="interweb">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-interweb"></div>
+              <div class="title-bar-text">Interweb Explorer</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body browser-body">
+              <div class="address-bar">
+                <span>Address</span>
+                <input type="text" value="http://www.altavista.party/" readonly />
+              </div>
+              <div class="browser-content">
+                <p>You are not connected to the Internet.</p>
+                <p>To connect, run a 56k modem through the DJ booth.</p>
+                <button class="btn" data-action="diagnose-connection">Diagnose Connection</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Network Neighborhood -->
+          <div class="win95-window app-window hidden" data-window-id="network">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-network"></div>
+              <div class="title-bar-text">Network Neighborhood</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <ul class="simple-list">
+                <li data-action="net-livingroom">LIVINGROOM-PC</li>
+                <li data-action="net-dj">DJ-BOOTH</li>
+                <li data-action="net-fridge">KITCHEN-FRIDGE</li>
+                <li data-action="net-bathroom">BATHROOM-LATENCY</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Recycle Bin -->
+          <div class="win95-window app-window hidden" data-window-id="recycle-bin">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-bin"></div>
+              <div class="title-bar-text">Recycle Bin</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <p>Recycle Bin is empty. Not even your bad decisions are here yet.</p>
+              <button class="btn" data-action="view-deleted">View deleted items</button>
+              <ul class="simple-list hidden" id="deleted-items">
+                <li>social-anxiety.tmp</li>
+                <li>small-talk.wrk</li>
+                <li>homework.doc</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Install Party Drivers -->
+          <div class="win95-window app-window hidden" data-window-id="party-drivers">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-exe"></div>
+              <div class="title-bar-text">Party Driver Setup</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <p>This wizard will install the necessary drivers for maximum party performance.</p>
+              <label class="checkbox">
+                <input type="checkbox" checked />
+                Enable spontaneous dancing
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" />
+                Overclock social skills
+              </label>
+              <label class="checkbox">
+                <input type="checkbox" />
+                Install glitter (may be permanent)
+              </label>
+              <button class="btn" data-action="install-party-drivers">Install</button>
+              <p id="party-driver-status" class="note"></p>
+            </div>
+          </div>
+
+          <!-- Documents window -->
+          <div class="win95-window app-window hidden" data-window-id="documents">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-text"></div>
+              <div class="title-bar-text">Documents</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <ul class="simple-list">
+                <li data-doc="party-instructions">party-instructions.doc</li>
+                <li data-doc="todo">todo-before-midnight.txt</li>
+                <li data-doc="secret-crush">secret-crush-list.txt</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Notepad generic window -->
+          <div class="win95-window app-window hidden" data-window-id="notepad">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-text"></div>
+              <div class="title-bar-text">Notepad</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="notepad-menu">File  Edit  Search  Help</div>
+              <textarea id="notepad-text" class="notepad-text" readonly></textarea>
+            </div>
+          </div>
+
+          <!-- Calculator -->
+          <div class="win95-window app-window hidden" data-window-id="calculator">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-exe"></div>
+              <div class="title-bar-text">Calculator</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body calc-body">
+              <input type="text" id="calc-display" class="calc-display" value="0" readonly />
+              <div class="calc-buttons">
+                <button class="btn-calc" data-calc="7">7</button>
+                <button class="btn-calc" data-calc="8">8</button>
+                <button class="btn-calc" data-calc="9">9</button>
+                <button class="btn-calc" data-calc="/">/</button>
+                <button class="btn-calc" data-calc="4">4</button>
+                <button class="btn-calc" data-calc="5">5</button>
+                <button class="btn-calc" data-calc="6">6</button>
+                <button class="btn-calc" data-calc="*">*</button>
+                <button class="btn-calc" data-calc="1">1</button>
+                <button class="btn-calc" data-calc="2">2</button>
+                <button class="btn-calc" data-calc="3">3</button>
+                <button class="btn-calc" data-calc="-">-</button>
+                <button class="btn-calc" data-calc="0">0</button>
+                <button class="btn-calc" data-calc=".">.</button>
+                <button class="btn-calc" data-calc="C">C</button>
+                <button class="btn-calc" data-calc="+">+</button>
+                <button class="btn-calc calc-eq" data-calc="=">=</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Volume Control -->
+          <div class="win95-window app-window hidden" data-window-id="volume">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-speaker"></div>
+              <div class="title-bar-text">Volume Control</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="slider-group">
+                <label>Master</label>
+                <input type="range" min="0" max="100" value="75" />
+              </div>
+              <div class="slider-group">
+                <label>Party</label>
+                <input type="range" min="0" max="100" value="95" />
+              </div>
+              <p class="note">This does nothing to the actual music.</p>
+            </div>
+          </div>
+
+          <!-- Party Mode Wizard -->
+          <div class="win95-window app-window hidden" data-window-id="party-wizard">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-exe"></div>
+              <div class="title-bar-text">Party Mode Wizard</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="party-step" data-party-step="1">
+                <p>Select party difficulty:</p>
+                <label class="radio">
+                  <input type="radio" name="party-difficulty" value="easy" checked />
+                  Easy
+                </label>
+                <label class="radio">
+                  <input type="radio" name="party-difficulty" value="normal" />
+                  Normal
+                </label>
+                <label class="radio">
+                  <input type="radio" name="party-difficulty" value="legendary" />
+                  Legendary
+                </label>
+              </div>
+              <div class="party-step hidden" data-party-step="2">
+                <p>Confirm you have snacks.</p>
+                <label class="checkbox">
+                  <input type="checkbox" id="party-snacks" />
+                  Yes, snacks are present.
+                </label>
+              </div>
+              <div class="party-step hidden" data-party-step="3">
+                <p>You are now ready. Windows may or may not cooperate.</p>
+              </div>
+              <div class="wizard-buttons">
+                <button class="btn" id="party-back">Back</button>
+                <button class="btn" id="party-next">Next</button>
+                <button class="btn" id="party-finish" class="hidden">Finish</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Costume Control Panel -->
+          <div class="win95-window app-window hidden" data-window-id="costume-panel">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-monitor"></div>
+              <div class="title-bar-text">Costume Control Panel</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="slider-group">
+                <label>Neon intensity</label>
+                <input type="range" min="0" max="100" value="80" />
+              </div>
+              <div class="slider-group">
+                <label>90s accuracy</label>
+                <input type="range" min="0" max="100" value="95" />
+              </div>
+              <div class="slider-group">
+                <label>Number of pockets</label>
+                <input type="range" min="0" max="100" value="50" />
+              </div>
+              <p class="note" id="costume-caption">Neon level critical.</p>
+            </div>
+          </div>
+
+          <!-- Existential Task Manager -->
+          <div class="win95-window app-window hidden" data-window-id="existential-task">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-error"></div>
+              <div class="title-bar-text">Existential Task Manager</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <table class="task-table">
+                <thead>
+                  <tr><th>Process</th><th>Status</th></tr>
+                </thead>
+                <tbody id="existential-processes">
+                  <tr data-process="self-awareness"><td>self-awareness.exe</td><td>Running</td></tr>
+                  <tr data-process="imposter"><td>imposter-syndrome.dll</td><td>Running</td></tr>
+                  <tr data-process="dance"><td>dance.exe</td><td>Running</td></tr>
+                </tbody>
+              </table>
+              <div class="task-buttons">
+                <button class="btn" id="existential-end">End Task</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Control Panel (Display/Sound/Costume) -->
+          <div class="win95-window app-window hidden" data-window-id="control-panel">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-monitor"></div>
+              <div class="title-bar-text">Control Panel</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="icon-grid">
+                <div class="big-icon" data-action="cp-display">
+                  <div class="icon icon-monitor"></div>
+                  <span>Display</span>
+                </div>
+                <div class="big-icon" data-action="cp-sound">
+                  <div class="icon icon-speaker"></div>
+                  <span>Sound</span>
+                </div>
+                <div class="big-icon" data-action="cp-costume">
+                  <div class="icon icon-folder"></div>
+                  <span>Costume</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Taskbar -->
+          <div id="taskbar">
+            <button id="start-button">
+              <span class="start-icon">
+                <span class="sq s1"></span>
+                <span class="sq s2"></span>
+                <span class="sq s3"></span>
+                <span class="sq s4"></span>
+              </span>
+              <span class="start-text">Start</span>
+            </button>
+            <div id="taskbar-center"></div>
+            <div id="taskbar-clock">10:35 PM</div>
+          </div>
+
+          <!-- Start menu -->
+          <div id="start-menu" class="hidden">
+            <div class="start-menu-inner">
+              <div class="start-menu-logo" aria-hidden="true">Windows 95</div>
+              <ul class="start-menu-list">
+                <li class="has-submenu" data-icon="folder">
+                  Programs
+                  <ul class="submenu">
+                    <li class="has-submenu" data-icon="folder">
+                      Accessories
+                      <ul class="submenu">
+                        <li data-open="notepad" data-icon="text">Notepad</li>
+                        <li data-open="paint" data-icon="monitor">Paint (demo)</li>
+                        <li data-open="calculator" data-icon="exe">Calculator</li>
+                        <li data-open="task-manager" data-icon="exe">Task Manager</li>
+                      </ul>
+                    </li>
+                    <li class="has-submenu" data-icon="folder">
+                      Entertainment
+                      <ul class="submenu">
+                        <li data-open="volume" data-icon="exe">Volume Control</li>
+                        <li data-open="party-wizard" data-icon="exe">Party Mode Wizard</li>
+                      </ul>
+                    </li>
+                    <li class="has-submenu" data-icon="folder">
+                      Oxymoronics
+                      <ul class="submenu">
+                        <li data-open="costume-panel" data-icon="monitor">Costume Control Panel</li>
+                        <li data-open="existential-task" data-icon="warning">Existential Task Manager</li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li data-open="documents" data-icon="text">Documents</li>
+                <li class="has-submenu" data-icon="folder">
+                  Settings
+                  <ul class="submenu">
+                    <li data-open="control-panel" data-icon="monitor">Control Panel</li>
+                    <li data-action="settings-taskbar" data-icon="logo">Taskbar &amp; Start Menu</li>
+                    <li data-action="settings-costume" data-icon="monitor">Costume Settings...</li>
+                  </ul>
+                </li>
+                <li data-open="find" data-icon="folder">Find</li>
+                <li data-open="help" data-icon="info">Help</li>
+                <li data-open="run" data-icon="exe">Run...</li>
+                <li data-action="reinstall" data-icon="floppy">Reinstall Windows 95...</li>
+                <li data-open="shutdown" data-icon="logo">Shut Down...</li>
+              </ul>
+            </div>
+          </div>
+
+          <!-- Taskbar context menu (for Task Manager) -->
+          <div id="taskbar-menu" class="hidden">
+            <ul>
+              <li data-open="task-manager">Task Manager</li>
+            </ul>
+          </div>
+
+          <!-- Run dialog -->
+          <div class="win95-window dialog-window hidden" data-window-id="run">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-exe"></div>
+              <div class="title-bar-text">Run</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <p>Type the name of a program, folder, document, or Internet resource, and Windows will open it for you (or pretend to).</p>
+              <div class="run-row">
+                <span>Open:</span>
+                <input type="text" id="run-input" class="text-input" />
+              </div>
+              <p class="note">Try: PARTY.EXE, REINSTALL, or CRASH.</p>
+              <div class="dialog-buttons">
+                <button class="btn" id="run-ok">OK</button>
+                <button class="btn" id="run-cancel">Cancel</button>
+                <button class="btn" id="run-browse">Browse...</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Find window -->
+          <div class="win95-window app-window hidden" data-window-id="find">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-folder"></div>
+              <div class="title-bar-text">Find: Files or Folders</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <div class="run-row">
+                <span>Named:</span>
+                <input type="text" id="find-input" class="text-input" />
+              </div>
+              <button class="btn" id="find-now">Find Now</button>
+              <p id="find-status" class="note"></p>
+              <ul id="find-results" class="simple-list"></ul>
+            </div>
+          </div>
+
+          <!-- Help window -->
+          <div class="win95-window app-window hidden" data-window-id="help">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-info"></div>
+              <div class="title-bar-text">Windows Help</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body help-body">
+              <div class="help-left">
+                <ul class="simple-list" id="help-topics">
+                  <li data-topic="people">How do I people?</li>
+                  <li data-topic="floppy">What is a floppy disk?</li>
+                  <li data-topic="accuracy">Is this costume historically accurate?</li>
+                </ul>
+              </div>
+              <div class="help-right">
+                <div class="run-row">
+                  <span>Search:</span>
+                  <input type="text" id="help-search" class="text-input" />
+                </div>
+                <div id="help-text" class="help-text">
+                  Select a topic on the left.
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Reinstall dialog (Start menu) -->
+          <div class="win95-window dialog-window hidden" data-window-id="reinstall-dialog">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-floppy"></div>
+              <div class="title-bar-text">Windows Setup</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <p>Do you want to reinstall Windows 95? This may reset open windows but will definitely impress no one.</p>
+              <div class="dialog-buttons">
+                <button class="btn" id="reinstall-yes">Yes</button>
+                <button class="btn" id="reinstall-no">No</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Shut Down window -->
+          <div class="win95-window dialog-window hidden" data-window-id="shutdown">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-logo"></div>
+              <div class="title-bar-text">Shut Down Windows</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body">
+              <p>What do you want the computer to do?</p>
+              <label class="radio">
+                <input type="radio" name="shutdown-option" value="shutdown" checked />
+                Shut down the party
+              </label>
+              <label class="radio">
+                <input type="radio" name="shutdown-option" value="restart" />
+                Restart the party
+              </label>
+              <label class="radio">
+                <input type="radio" name="shutdown-option" value="pretend" />
+                Close eyes and pretend to reboot
+              </label>
+              <div class="dialog-buttons">
+                <button class="btn" id="shutdown-ok">OK</button>
+                <button class="btn" id="shutdown-cancel">Cancel</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Find / Help / Settings special messages use generic message box -->
+
+          <!-- Task Manager -->
+          <div class="win95-window app-window hidden" data-window-id="task-manager">
+            <div class="title-bar">
+              <div class="title-bar-icon icon-exe"></div>
+              <div class="title-bar-text" id="tm-title">Windows Task Manager</div>
+              <div class="title-bar-controls">
+                <button class="title-button" data-close aria-label="Close window">✕</button>
+              </div>
+            </div>
+            <div class="window-body" id="tm-body">
+              <div class="tm-tabs">
+                <button class="tm-tab tm-tab-active" data-tab="apps">Applications</button>
+                <button class="tm-tab" data-tab="procs">Processes</button>
+                <button class="tm-tab" data-tab="perf">Performance</button>
+              </div>
+              <div class="tm-tab-page" data-tab-page="apps">
+                <table class="task-table" id="tm-apps-table">
+                  <thead>
+                    <tr><th>Task</th><th>Status</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-task="desktop" class="tm-selected"><td>Windows 95 Costume Desktop</td><td>Running</td></tr>
+                    <tr data-task="party"><td>party.exe</td><td>Running</td></tr>
+                    <tr data-task="imposter"><td>imposter-syndrome.dll</td><td>Running</td></tr>
+                  </tbody>
+                </table>
+                <div class="task-buttons">
+                  <button class="btn" id="tm-end-task">End Task</button>
+                  <button class="btn" id="tm-switch-to">Switch To</button>
+                  <button class="btn" id="tm-new-task">New Task...</button>
+                </div>
+                <div id="tm-status" class="note"></div>
+              </div>
+              <div class="tm-tab-page hidden" data-tab-page="procs">
+                <table class="task-table" id="tm-procs-table">
+                  <thead>
+                    <tr><th>Process</th><th>CPU</th></tr>
+                  </thead>
+                  <tbody>
+                    <tr data-proc="system" class="tm-selected"><td>system</td><td>42%</td></tr>
+                    <tr data-proc="explorer"><td>explorer.exe</td><td>32%</td></tr>
+                    <tr data-proc="party"><td>party.exe</td><td>21%</td></tr>
+                    <tr data-proc="paranoia"><td>paranoia.sys</td><td>7%</td></tr>
+                  </tbody>
+                </table>
+                <div class="task-buttons">
+                  <button class="btn" id="tm-procs-end">End Task</button>
+                </div>
+              </div>
+              <div class="tm-tab-page hidden" data-tab-page="perf">
+                <div class="perf-bars">
+                  <div>
+                    <label>CPU Usage</label>
+                    <div class="perf-bar"><div class="perf-inner" style="width:95%"></div></div>
+                  </div>
+                  <div>
+                    <label>Memory Usage</label>
+                    <div class="perf-bar"><div class="perf-inner" style="width:90%"></div></div>
+                  </div>
+                </div>
+                <p class="note">Performance is fine. You’re the one who’s tired.</p>
+              </div>
+            </div>
+            <div id="tm-overlay" class="tm-overlay hidden"></div>
+          </div>
+
+          <!-- Control Panel meta dialogs (Taskbar & Start Menu / Costume Settings) use generic message box -->
+
+          <!-- MESSAGE BOX OVERLAY -->
+          <div id="message-overlay" class="hidden">
+            <div id="message-box" class="win95-window dialog-window">
+              <div class="title-bar">
+                <div class="title-bar-icon icon-logo"></div>
+                <div class="title-bar-text" id="msg-title">Windows</div>
+                <div class="title-bar-controls">
+                  <button class="title-button" id="msg-close" aria-label="Close message box">✕</button>
+                </div>
+              </div>
+              <div class="window-body">
+                <div class="msg-content">
+                  <div class="msg-icon" id="msg-icon">i</div>
+                  <div class="msg-text" id="msg-text"></div>
+                </div>
+                <div class="dialog-buttons" id="msg-buttons"></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- BSOD OVERLAY -->
+          <div id="bsod-overlay" class="hidden">
+            <pre>
+A fatal exception 0E has occurred at 0028:C001E36 in VXD PARTY(01) + 0001E36.
+The current party will be terminated.
+
+*  Press any key to attempt to continue.
+*  Press CTRL+ALT+DEL again to restart your computer. You will
+   lose any unsaved dance moves in all active programs.
+
+Press any key to continue _
+            </pre>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
