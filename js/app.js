@@ -148,15 +148,8 @@ function cacheDom() {
 /* ------------------------- SCALING ------------------------- */
 
 function initScaling() {
-  function applyScale() {
-    const w = window.innerWidth;
-    const h = window.innerHeight;
-    const scale = Math.min(w / 640, h / 480);
-    Dom.app.style.transform = `scale(${scale})`;
-  }
-
-  window.addEventListener("resize", applyScale);
-  applyScale();
+  // Fullscreen layout: no transform scaling; fill viewport via CSS
+  Dom.app.style.transform = "";
 }
 
 /* ------------------------- SCREEN SWITCHING ------------------------- */

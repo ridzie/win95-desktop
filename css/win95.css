@@ -40,13 +40,13 @@ body {
 }
 
 #app {
-  width: 640px;
-  height: 480px;
+  width: 100vw;
+  height: 100vh;
   background: var(--win95-teal); /* teal desktop */
   position: relative;
-  transform-origin: center center;
-  border: 2px solid #000;
-  box-shadow: 0 0 0 1px var(--win95-highlight), 18px 18px 0 rgba(0, 0, 0, 0.55);
+  transform: none;
+  border: none;
+  box-shadow: none;
 }
 
 /* Generic utilities */
@@ -370,6 +370,7 @@ body {
   width: 100%;
   height: 100%;
   padding: 10px;
+  padding-bottom: 38px; /* keep content above taskbar */
   background-color: var(--win95-teal);
 }
 
@@ -1022,6 +1023,47 @@ body {
 #bsod-overlay pre {
   white-space: pre;
   font-size: 12px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 900px) {
+  .wizard-window { width: min(520px, 95vw); }
+  .wizard-body { flex-direction: column; }
+  .wizard-left, .wizard-right { width: 100%; padding: 0; border: 0; }
+}
+
+@media (max-width: 768px) {
+  /* Ensure windows fit within viewport */
+  .win95-window { max-width: 95vw; }
+  .app-window,
+  .dialog-window {
+    left: 2.5vw;
+    top: 6vh;
+    max-width: 95vw;
+  }
+  .window-body { max-height: calc(100vh - 160px); overflow: auto; }
+
+  /* Start menu width on small screens */
+  #start-menu { width: min(220px, 90vw); }
+}
+
+@media (max-width: 520px) {
+  /* Make desktop icons flow instead of absolute stacking */
+  #desktop { display: flex; flex-wrap: wrap; align-content: flex-start; gap: 8px; }
+  .desktop-icon {
+    position: static;
+    width: calc(33.333% - 8px);
+    min-width: 88px;
+    max-width: 140px;
+  }
+  .desktop-icon:nth-child(n) { top: auto; left: auto; }
+
+  /* Slightly larger taskbar for touch */
+  #taskbar { height: 34px; }
+  #start-menu { bottom: 34px; }
+
+  /* Inputs/buttons touch targets */
+  .btn { padding: 4px 14px; }
 }
 
 /* Hover cursor on interactive things */
