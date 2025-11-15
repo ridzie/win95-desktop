@@ -210,6 +210,10 @@ Press ENTER to select.
             <div class="icon icon-floppy"></div>
             <div class="icon-label">Install Party Drivers</div>
           </div>
+          <div class="desktop-icon" data-window-target="task-manager">
+            <div class="icon icon-exe"></div>
+            <div class="icon-label">Task Manager</div>
+          </div>
 
           <!-- Windows (predefined, toggled via JS) -->
 
@@ -317,6 +321,8 @@ Press ENTER to select.
             <div class="window-body">
               <p>This wizard will install the necessary drivers for maximum party performance.</p>
               <label class="checkbox">
+
+          
                 <input type="checkbox" checked />
                 Enable spontaneous dancing
               </label>
@@ -771,6 +777,10 @@ Press ENTER to select.
                   <button class="btn" id="tm-new-task">New Task...</button>
                 </div>
                 <div id="tm-status" class="note"></div>
+                <div class="message-box" id="tm-inline-msg">
+                  The application "Windows Task Manager" may become not responding.<br /><br />
+                  If you end the task now, you may lose any unsaved data.
+                </div>
               </div>
               <div class="tm-tab-page hidden" data-tab-page="procs">
                 <table class="task-table" id="tm-procs-table">
@@ -846,5 +856,6 @@ Press any key to continue _
   </div>
 
   <script src="js/app.js"></script>
+  <audio id="error-sound" preload="auto" src="assets/audio/error.mp3"></audio>
 </body>
 </html>

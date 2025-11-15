@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <meta name="apple-mobile-web-app-capable" content="yes" />
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+  <title>Task Manager - Not Responding</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { height: 100%; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+      background-color: #008080; /* Win95 teal desktop */
+      color: #000;
+      padding-top: env(safe-area-inset-top, 0);
+      padding-right: env(safe-area-inset-right, 0);
+      padding-bottom: env(safe-area-inset-bottom, 0);
+      padding-left: env(safe-area-inset-left, 0);
+      -webkit-touch-callout: none;
+      -webkit-user-select: none;
+      user-select: none;
+    }
+    .desktop { position: fixed; inset: 0; overflow: hidden; }
+    .window {
+      position: fixed; width: min(360px, 94vw); max-height: 90vh; background-color: #c0c0c0; border: 2px solid #000;
+      box-shadow: 0 0 0 1px #fff, 3px 3px 0 rgba(0, 0, 0, 0.4); display: flex; flex-direction: column;
+    }
+    .title-bar { background: linear-gradient(to right, #000080, #1084d0); display: flex; align-items: center; justify-content: space-between; padding: 2px 4px; color: #fff; font-weight: bold; font-size: 14px; }
+    .title-bar-text { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .title-hint { font-weight: normal; font-size: 11px; opacity: 0.9; margin-left: 4px; }
+    .title-bar-controls { display: flex; gap: 2px; }
+    .title-bar-controls button { width: 16px; height: 16px; font-size: 10px; line-height: 12px; padding: 0; border: 1px solid #000; background-color: #c0c0c0; box-shadow: 1px 1px 0 #fff, -1px -1px 0 #808080; cursor: default; }
+    .title-bar-controls button:active { box-shadow: inset 1px 1px 0 #808080, inset -1px -1px 0 #fff; }
+    .menu-bar { display: flex; gap: 12px; padding: 3px 6px; font-size: 12px; }
+    .content { padding: 8px; font-size: 12px; display: flex; flex-direction: column; gap: 8px; overflow: auto; }
+    .status-row { display: flex; justify-content: space-between; font-size: 12px; }
+    .status-row .label { font-weight: bold; }
+    .status-row .value.not-responding { color: #800000; font-weight: bold; }
+    .task-list { border: 2px solid #808080; box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #404040; background-color: #fff; padding: 4px; display: flex; flex-direction: column; gap: 2px; }
+    .task-header, .task-row { display: grid; grid-template-columns: 2fr 1fr; font-size: 11px; }
+    .task-header { border-bottom: 1px solid #c0c0c0; font-weight: bold; margin-bottom: 2px; padding-bottom: 2px; }
+    .task-row span:last-child { text-align: right; }
+    .message-box { border: 2px solid #808080; box-shadow: inset 1px 1px 0 #fff, inset -1px -1px 0 #404040; background-color: #c0c0c0; padding: 6px; font-size: 11px; line-height: 1.4; }
+    .button-row { display: flex; justify-content: flex-end; gap: 8px; padding: 8px; }
+    .button-row button { min-width: 80px; padding: 4px 10px; font-size: 12px; border: 2px solid #808080; background-color: #c0c0c0; box-shadow: 1px 1px 0 #fff, -1px -1px 0 #404040; cursor: default; touch-action: manipulation; }
+    .button-row button:active { box-shadow: inset 1px 1px 0 #404040, inset -1px -1px 0 #fff; }
+    .button-row .primary { font-weight: bold; }
+  </style>
+</head>
+<body>
+  <div class="desktop">
+    <div class="window">
+      <div class="title-bar">
+        <div class="title-bar-text">
+          Windows Task Manager
+          <span class="title-hint">(Not Responding)</span>
+        </div>
+        <div class="title-bar-controls" aria-hidden="true">
+          <button>_</button>
+          <button>□</button>
+          <button>X</button>
+        </div>
+      </div>
+
+      <div class="menu-bar">
+        <span>File</span>
+        <span>Options</span>
+        <span>View</span>
+        <span>Help</span>
+      </div>
+
+      <div class="content">
+        <div class="status-row">
+          <span class="label">Application:</span>
+          <span class="value">Windows Task Manager</span>
+        </div>
+        <div class="status-row">
+          <span class="label">Status:</span>
+          <span class="value not-responding">Not Responding</span>
+        </div>
+
+        <div class="task-list" aria-label="Task list">
+          <div class="task-header">
+            <span>Task</span>
+            <span>Status</span>
+          </div>
+          <div class="task-row">
+            <span>Windows Task Manager</span>
+            <span>Not Responding</span>
+          </div>
+          <div class="task-row">
+            <span>explorer.exe</span>
+            <span>Running</span>
+          </div>
+          <div class="task-row">
+            <span>costume-overlay.exe</span>
+            <span>Running</span>
+          </div>
+        </div>
+
+        <div class="message-box">
+          The application "Windows Task Manager" is not responding.<br /><br />
+          If you end the task now, you may lose any unsaved data.
+        </div>
+      </div>
+
+      <div class="button-row">
+        <button class="primary end-task">End Task</button>
+        <button class="cancel-task">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Change this to set how many windows can stack before reset:
+    const MAX_WINDOWS = 6;
+
+    const OFFSET_Y = 18;
+    const OFFSET_X = 12;
+
+    const desktop = document.querySelector(".desktop");
+    const baseWindow = document.querySelector(".window");
+
+    let windowCount = 1;
+
+    function updateWindowPositions() {
+      const windows = desktop.querySelectorAll(".window");
+      if (!windows.length) return;
+
+      const rect = windows[0].getBoundingClientRect();
+      const winWidth = rect.width || 320;
+      const winHeight = rect.height || 200;
+
+      const viewportWidth = window.innerWidth;
+      const viewportHeight = window.innerHeight;
+
+      const centerTop = (viewportHeight - winHeight) / 2;
+      const centerLeft = (viewportWidth - winWidth) / 2;
+
+      windows.forEach((win, index) => {
+        const top = Math.round(centerTop + index * OFFSET_Y);
+        const left = Math.round(centerLeft + index * OFFSET_X);
+        win.style.top = top + "px";
+        win.style.left = left + "px";
+        win.style.zIndex = 100 + index;
+      });
+    }
+
+    function cloneWindow() {
+      const newWindow = baseWindow.cloneNode(true);
+      desktop.appendChild(newWindow);
+      windowCount++;
+      updateWindowPositions();
+    }
+
+    function resetWindows() {
+      const windows = desktop.querySelectorAll(".window");
+      windows.forEach((win, index) => { if (index === 0) return; win.remove(); });
+      windowCount = 1;
+      updateWindowPositions();
+    }
+
+    window.addEventListener("load", updateWindowPositions);
+    window.addEventListener("resize", updateWindowPositions);
+
+    desktop.addEventListener("click", (event) => {
+      const endBtn = event.target.closest(".end-task");
+      if (endBtn) {
+        if (windowCount < MAX_WINDOWS) { cloneWindow(); } else { resetWindows(); }
+      }
+      const cancelBtn = event.target.closest(".cancel-task");
+      if (cancelBtn) { /* intentionally no-op */ }
+    });
+  </script>
+</body>
+</html>

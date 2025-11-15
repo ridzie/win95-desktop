@@ -401,6 +401,7 @@ body {
 .desktop-icon:nth-child(3) { top: 144px; left: 16px; }
 .desktop-icon:nth-child(4) { top: 208px; left: 16px; }
 .desktop-icon:nth-child(5) { top: 272px; left: 16px; }
+.desktop-icon:nth-child(6) { top: 336px; left: 16px; }
 
 .icon-label {
   text-shadow: 1px 1px 1px #000;
@@ -511,6 +512,16 @@ body {
   min-width: 260px;
   max-width: 480px;
   z-index: 10;
+}
+
+/* Message box styling (from original Task Manager source) */
+.message-box {
+  border: 2px solid var(--win95-shadow);
+  box-shadow: inset 1px 1px 0 var(--win95-highlight), inset -1px -1px 0 var(--win95-dark-shadow);
+  background-color: var(--win95-face);
+  padding: 6px;
+  font-size: 11px;
+  line-height: 1.4;
 }
 
 /* Taskbar */

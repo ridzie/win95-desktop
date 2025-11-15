@@ -1036,6 +1036,15 @@ function showSystemSettingsChange() {
 
 function initTaskManager() {
   if (!Dom.taskManagerWindow) return;
+  const errorAudio = document.getElementById("error-sound");
+  function playError() {
+    if (!errorAudio) return;
+    try {
+      errorAudio.currentTime = 0;
+      const p = errorAudio.play();
+      if (p && typeof p.catch === "function") p.catch(() => {});
+    } catch (_) {}
+  }
 
   // Tab switching
   Dom.tmTabs.forEach((tab) => {
@@ -1069,6 +1078,7 @@ function initTaskManager() {
     if (!sel) return;
     const task = sel.dataset.task;
     if (task === "party") {
+      playError();
       // End Task sequence
       showMessage(
         "Task Manager",
@@ -1126,6 +1136,7 @@ function initTaskManager() {
   // Overlay (for not responding)
   Dom.tmOverlay.addEventListener("click", () => {
     if (!AppState.tmNotResponding) return;
+    playError();
     spawnTaskManagerNotRespondingDialog();
   });
 }
